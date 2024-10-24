@@ -1,0 +1,17 @@
+{
+  "server": {
+    "port": "10100",
+    "api_prefix": "API"
+  },
+  "jwt": {
+    "secret":"",
+    "exp": 24
+  },
+  "admin": {
+    "adminName": "default",
+    "adminPass":""
+  },
+  "postgresql": {
+    "dsn":""
+  }
+}
