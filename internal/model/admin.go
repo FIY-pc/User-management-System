@@ -1,6 +1,11 @@
 package model
 
-import "gorm.io/gorm"
+import (
+	"User-management-System/internal/config"
+	"errors"
+	"gorm.io/gorm"
+	"log"
+)
 
 type Admin struct {
 	AdminName string `json:"adminName"`
@@ -8,12 +13,33 @@ type Admin struct {
 	gorm.Model
 }
 
-func createAdmin(admin *Admin) error {
+// InitAdmin 初始化Admin
+// 若admin表为空，根据default配置生成初始admin账号
+func InitAdmin() {
+	_, err := GetAdminById(1)
+	if err != nil {
+		initAdmin := Admin{}
+		initAdmin.AdminName = config.Config.Admin.AdminName
+		initAdmin.AdminPass = config.Config.Admin.AdminPass
+		err := CreateAdmin(&initAdmin)
+		if err == nil {
+			log.Println("InitAdmin fail")
+		}
+	}
+}
+
+func CreateAdmin(admin *Admin) error {
+	if PostgresDb == nil {
+		return errors.New("postgres db is nil")
+	}
 	resultAdmin := PostgresDb.Model(&Admin{}).Create(admin)
 	return resultAdmin.Error
 }
 
 func UpdateAdmin(admin *Admin) error {
+	if PostgresDb == nil {
+		return errors.New("postgres db is nil")
+	}
 	resultAdmin := PostgresDb.First(&admin, admin.ID)
 	if resultAdmin.Error != nil {
 		return resultAdmin.Error
@@ -23,12 +49,27 @@ func UpdateAdmin(admin *Admin) error {
 }
 
 func GetAdminByName(AdminName string) (*Admin, error) {
+	if PostgresDb == nil {
+		return nil, errors.New("postgres db is nil")
+	}
 	var admin Admin
-	resultAdmin := PostgresDb.Where("AdminName = ?", AdminName).First(&admin)
+	resultAdmin := PostgresDb.Where("admin_name = ?", AdminName).First(&admin)
+	return &admin, resultAdmin.Error
+}
+
+func GetAdminById(id uint) (*Admin, error) {
+	if PostgresDb == nil {
+		return nil, errors.New("postgres db is nil")
+	}
+	var admin Admin
+	resultAdmin := PostgresDb.Where("id =?", id).First(&admin)
 	return &admin, resultAdmin.Error
 }
 
 func DeleteAdminByName(name string) error {
+	if PostgresDb == nil {
+		return errors.New("postgres db is nil")
+	}
 	resultAdmin := PostgresDb.Delete(&Admin{})
 	return resultAdmin.Error
 }

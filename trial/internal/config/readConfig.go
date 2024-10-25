@@ -27,7 +27,7 @@ type JwtConfig struct {
 
 type AdminConfig struct {
 	AdminName string `json:"adminName"`
-	AdminPass string `json:"adminPass"`
+	Password  string `json:"adminPass"`
 }
 
 type PostgresConfig struct {

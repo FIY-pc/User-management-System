@@ -1,7 +1,7 @@
 package model
 
 import (
-	"User-management-System/internal/config"
+	"User-management-System/trial/internal/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

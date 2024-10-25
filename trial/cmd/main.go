@@ -1,9 +1,9 @@
 package main
 
 import (
-	"User-management-System/internal/config"
-	"User-management-System/internal/model"
-	"User-management-System/internal/router"
+	"User-management-System/trial/internal/config"
+	"User-management-System/trial/internal/model"
+	"User-management-System/trial/internal/router"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )
@@ -14,7 +14,9 @@ func main() {
 	e.Use(middleware.Recover())
 	config.InitConfig()
 	model.InitPostgres()
-	model.InitAdmin()
 	router.InitRouter(e)
-	e.Logger.Fatal(e.Start(":" + config.Config.Server.Port))
+	err := e.Start(":" + config.Config.Server.Port)
+	if err != nil {
+		e.Logger.Fatal(err)
+	}
 }

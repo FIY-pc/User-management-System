@@ -36,7 +36,7 @@ func GetUserByName(Name string) (*User, error) {
 		return nil, errors.New("postgres db not initialized")
 	}
 	var user User
-	resultUser := PostgresDb.Where("name = ?", Name).First(&user)
+	resultUser := PostgresDb.Model(&User{}).Where("Name = ?", Name).First(&user)
 	return &user, resultUser.Error
 }
 
