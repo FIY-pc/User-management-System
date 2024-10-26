@@ -13,6 +13,7 @@ type configStruct struct {
 	Jwt      JwtConfig      `json:"jwt"`
 	Admin    AdminConfig    `json:"admin"`
 	Postgres PostgresConfig `json:"postgresql"`
+	Bcrypt   BcryptConfig   `json:"bcrypt"`
 }
 
 type ServerConfig struct {
@@ -32,6 +33,10 @@ type AdminConfig struct {
 
 type PostgresConfig struct {
 	Dsn string `json:"dsn"`
+}
+
+type BcryptConfig struct {
+	Cost int `json:"cost"`
 }
 
 func InitConfig() {

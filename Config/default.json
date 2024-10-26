@@ -4,14 +4,17 @@
     "api_prefix": "API"
   },
   "jwt": {
-    "secret":"",
-    "exp": 24
+    "secret":"" ,
+    "exp": 3600
   },
   "admin": {
     "adminName": "default",
-    "adminPass":""
+    "adminPass": ""
   },
   "postgresql": {
     "dsn":""
+  },
+  "bcrypt": {
+    "cost": 10
   }
 }

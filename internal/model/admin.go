@@ -22,7 +22,7 @@ func InitAdmin() {
 		initAdmin := Admin{}
 		initAdmin.AdminName = config.Config.Admin.AdminName
 		rawAdminPass := config.Config.Admin.AdminPass
-		hashAdminPass, err := bcrypt.GenerateFromPassword([]byte(rawAdminPass), bcrypt.DefaultCost)
+		hashAdminPass, err := bcrypt.GenerateFromPassword([]byte(rawAdminPass), config.Config.Bcrypt.Cost)
 		if err != nil {
 			log.Fatal(err)
 		}

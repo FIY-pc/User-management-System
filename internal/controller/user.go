@@ -28,7 +28,7 @@ func Register(e echo.Context) error {
 	newUser := model.User{}
 	newUser.Name = Name
 	// 密码加密
-	hashPassword, err := bcrypt.GenerateFromPassword([]byte(Password), bcrypt.DefaultCost)
+	hashPassword, err := bcrypt.GenerateFromPassword([]byte(Password), config.Config.Bcrypt.Cost)
 	if err != nil {
 		return e.JSON(http.StatusOK, map[string]string{"message": "password encrypt error"})
 	}
