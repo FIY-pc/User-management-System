@@ -6,29 +6,38 @@ import (
 	"User-management-System/internal/util"
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
+	"golang.org/x/crypto/bcrypt"
 	"net/http"
 )
 
 func Register(e echo.Context) error {
-	user := &model.User{}
-	user.Name = e.QueryParam("username")
-	user.Password = e.QueryParam("password")
+	Name := e.QueryParam("username")
+	Password := e.QueryParam("password")
 	// 非空检查
-	if user.Name == "" {
+	if Name == "" {
 		return e.JSON(http.StatusOK, map[string]string{"message": "username is empty"})
 	}
-	if user.Password == "" {
+	if Password == "" {
 		return e.JSON(http.StatusOK, map[string]string{"message": "password is empty"})
 	}
 	// 检查是否存在同名user
-	if existuser, _ := model.GetUserByName(user.Name); existuser.Name == user.Name {
+	if existuser, _ := model.GetUserByName(Name); existuser.Name == Name {
 		return e.JSON(http.StatusOK, map[string]string{"message": "username already exist"})
 	}
 	// 注册
-	if err := model.CreateUser(user); err != nil {
+	newUser := model.User{}
+	newUser.Name = Name
+	// 密码加密
+	hashPassword, err := bcrypt.GenerateFromPassword([]byte(Password), bcrypt.DefaultCost)
+	if err != nil {
+		return e.JSON(http.StatusOK, map[string]string{"message": "password encrypt error"})
+	}
+	newUser.Password = string(hashPassword)
+
+	if err := model.CreateUser(&newUser); err != nil {
 		return e.String(http.StatusInternalServerError, err.Error())
 	} else {
-		return e.JSON(http.StatusOK, user)
+		return e.JSON(http.StatusOK, map[string]string{"message": "User register success", "username": newUser.Name})
 	}
 }
 
@@ -37,7 +46,7 @@ func Login(e echo.Context) error {
 	user.Name = e.QueryParam("username")
 	user.Password = e.QueryParam("password")
 
-	// user验证
+	// user验证，先查询user表中是否存在该用户
 	resultuser, err := model.GetUserByName(user.Name)
 	// 若用户不存在于user表，进行进一步admin检查
 	if err != nil {
@@ -49,8 +58,9 @@ func Login(e echo.Context) error {
 			return e.String(http.StatusInternalServerError, err.Error())
 		}
 		// 验证adminPass
-		if user.Password != resultAdmin.AdminPass {
-			return e.String(http.StatusInternalServerError, "adminPass Invalid")
+		err = bcrypt.CompareHashAndPassword([]byte(resultAdmin.AdminPass), []byte(user.Password))
+		if err != nil {
+			return e.String(http.StatusInternalServerError, "Password Invalid")
 		}
 		// 验证成功
 		// 生成token
@@ -68,8 +78,9 @@ func Login(e echo.Context) error {
 	}
 
 	// user密码验证
-	if resultuser.Password != user.Password {
-		return e.JSON(http.StatusOK, map[string]string{"message": "password error"})
+	err = bcrypt.CompareHashAndPassword([]byte(resultuser.Password), []byte(user.Password))
+	if err != nil {
+		return e.String(http.StatusInternalServerError, "Password Invalid")
 	}
 
 	// 生成token

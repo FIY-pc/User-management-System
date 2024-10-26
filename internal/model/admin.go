@@ -3,6 +3,7 @@ package model
 import (
 	"User-management-System/internal/config"
 	"errors"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 	"log"
 )
@@ -20,8 +21,13 @@ func InitAdmin() {
 	if err != nil {
 		initAdmin := Admin{}
 		initAdmin.AdminName = config.Config.Admin.AdminName
-		initAdmin.AdminPass = config.Config.Admin.AdminPass
-		err := CreateAdmin(&initAdmin)
+		rawAdminPass := config.Config.Admin.AdminPass
+		hashAdminPass, err := bcrypt.GenerateFromPassword([]byte(rawAdminPass), bcrypt.DefaultCost)
+		if err != nil {
+			log.Fatal(err)
+		}
+		initAdmin.AdminPass = string(hashAdminPass)
+		err = CreateAdmin(&initAdmin)
 		if err == nil {
 			log.Println("InitAdmin fail")
 		}
@@ -70,6 +76,6 @@ func DeleteAdminByName(name string) error {
 	if PostgresDb == nil {
 		return errors.New("postgres db is nil")
 	}
-	resultAdmin := PostgresDb.Delete(&Admin{})
+	resultAdmin := PostgresDb.Where("admin_name=", name).Delete(&Admin{})
 	return resultAdmin.Error
 }
