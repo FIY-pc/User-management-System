@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// JwtClaims 是一个结构体，用于存储JWT令牌的声明信息。
 type JwtClaims struct {
 	UserId uint   `json:"userId"`
 	Role   string `json:"role"`

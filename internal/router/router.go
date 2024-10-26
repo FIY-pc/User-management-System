@@ -9,18 +9,21 @@ import (
 	"net/http"
 )
 
+// InitRouter 初始化所有路由
 func InitRouter(e *echo.Echo) {
 	InitHomeRouter(e)
 	InitUserRouter(e)
 	InitAdminRouter(e)
 }
 
+// InitHomeRouter 初始化首页路由
 func InitHomeRouter(e *echo.Echo) {
 	e.GET("/", func(c echo.Context) error {
 		return c.JSON(http.StatusOK, "Please use api to access")
 	})
 }
 
+// InitUserRouter 初始化用户路由
 func InitUserRouter(e *echo.Echo) {
 	// Login 包含user和admin的login
 	e.GET(fmt.Sprintf("%s/Login", config.Config.Server.ApiPrefix), controller.Login)
@@ -35,6 +38,7 @@ func InitUserRouter(e *echo.Echo) {
 	UserGroup.GET("/UserUpdateSelf", controller.UserUpdateSelf)
 }
 
+// InitAdminRouter 初始化管理员路由
 func InitAdminRouter(e *echo.Echo) {
 	// admin令牌具有所有权限
 	AdminGroup := e.Group(fmt.Sprintf("%s/admin", config.Config.Server.ApiPrefix))

@@ -6,8 +6,10 @@ import (
 	"gorm.io/gorm"
 )
 
+// PostgresDb 是一个全局的数据库连接对象
 var PostgresDb *gorm.DB
 
+// InitPostgres 初始化数据库连接
 func InitPostgres() {
 	var err error
 	PostgresDb, err = gorm.Open(postgres.Open(config.Config.Postgres.Dsn), &gorm.Config{})

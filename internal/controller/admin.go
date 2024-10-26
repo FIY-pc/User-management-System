@@ -7,6 +7,7 @@ import (
 	"net/http"
 )
 
+// CreateAdmin 创建管理员信息
 func CreateAdmin(e echo.Context) error {
 	newAdmin := model.Admin{}
 	newAdmin.AdminName = e.QueryParam("username")
@@ -26,6 +27,7 @@ func CreateAdmin(e echo.Context) error {
 	return e.JSON(http.StatusOK, map[string]interface{}{"message": "CreateAdmin success", "AdminName": newAdmin.AdminName})
 }
 
+// UpdateAdmin 更新管理员信息
 func UpdateAdmin(e echo.Context) error {
 	newAdmin := model.Admin{}
 	newAdmin.AdminName = e.QueryParam("username")
@@ -49,6 +51,7 @@ func UpdateAdmin(e echo.Context) error {
 	return e.JSON(http.StatusOK, map[string]interface{}{"message": "UpdateAdmin success", "AdminName": resultAdmin.AdminName, "AdminPass": resultAdmin.AdminPass})
 }
 
+// GetAdminByName 根据用户名获取管理员信息
 func GetAdminByName(e echo.Context) error {
 	resultAdmin, err := model.GetAdminByName(e.QueryParam("username"))
 	if err != nil {
@@ -57,6 +60,7 @@ func GetAdminByName(e echo.Context) error {
 	return e.JSON(http.StatusOK, map[string]interface{}{"message": "GetAdmin success", "AdminName": resultAdmin.AdminName, "AdminPass": resultAdmin.AdminPass, "CreateAt": resultAdmin.CreatedAt})
 }
 
+// DeleteAdmin 删除管理员信息
 func DeleteAdmin(e echo.Context) error {
 	if err := model.DeleteAdminByName(e.QueryParam("username")); err != nil {
 		return e.JSON(http.StatusInternalServerError, map[string]interface{}{"massage": "DeleteAdmin fail"})

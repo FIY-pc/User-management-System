@@ -8,6 +8,7 @@ import (
 	"log"
 )
 
+// Admin 管理员，具有最高权限
 type Admin struct {
 	AdminName string `json:"adminName"`
 	AdminPass string `json:"adminPass"`
@@ -34,6 +35,7 @@ func InitAdmin() {
 	}
 }
 
+// CreateAdmin 创建admin
 func CreateAdmin(admin *Admin) error {
 	if PostgresDb == nil {
 		return errors.New("postgres db is nil")
@@ -42,6 +44,7 @@ func CreateAdmin(admin *Admin) error {
 	return resultAdmin.Error
 }
 
+// UpdateAdmin 更新admin
 func UpdateAdmin(admin *Admin) error {
 	if PostgresDb == nil {
 		return errors.New("postgres db is nil")
@@ -54,6 +57,7 @@ func UpdateAdmin(admin *Admin) error {
 	return result.Error
 }
 
+// GetAdminByName 根据adminName获取admin
 func GetAdminByName(AdminName string) (*Admin, error) {
 	if PostgresDb == nil {
 		return nil, errors.New("postgres db is nil")
@@ -63,6 +67,7 @@ func GetAdminByName(AdminName string) (*Admin, error) {
 	return &admin, resultAdmin.Error
 }
 
+// GetAdminById 根据id获取admin
 func GetAdminById(id uint) (*Admin, error) {
 	if PostgresDb == nil {
 		return nil, errors.New("postgres db is nil")
@@ -72,6 +77,7 @@ func GetAdminById(id uint) (*Admin, error) {
 	return &admin, resultAdmin.Error
 }
 
+// DeleteAdminByName 根据adminName删除admin
 func DeleteAdminByName(name string) error {
 	if PostgresDb == nil {
 		return errors.New("postgres db is nil")
