@@ -48,11 +48,11 @@ func InitAdminRouter(e *echo.Echo) {
 	// 管理员管理路由CURD
 	AdminGroup.GET("/CreateAdmin", controller.CreateAdmin)
 	AdminGroup.GET("/UpdateAdmin", controller.UpdateAdmin)
-	AdminGroup.GET("/DeleteAdmin", controller.DeleteAdmin)
+	AdminGroup.GET("/DeleteAdmin", controller.DeleteAdminByName)
 	AdminGroup.GET("/GetAdminByName", controller.GetAdminByName)
 	// 用户管理路由
 	AdminGroup.GET("/UserCreate", controller.UserCreate)
-	AdminGroup.GET("/UserGet", controller.UserGet)
+	AdminGroup.GET("/UserGetByName", controller.UserGetByName)
 	AdminGroup.GET("/UserUpdate", controller.UserUpdate)
-	AdminGroup.GET("/UserDelete", controller.UserDelete)
+	AdminGroup.GET("/UserDeleteByName", controller.UserDeleteByName)
 }
