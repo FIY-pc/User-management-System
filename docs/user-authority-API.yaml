@@ -1,0 +1,42 @@
+openapi: 3.1.0
+info:
+  title: user权限能使用的API
+  description: 具有user权限的用户才能访问的API
+  version: 1.0.0
+paths:
+  /API/user/UserUpdateSelf:
+    get:
+      description: 能更改user权限用户自身信息的API
+
+      parameters:
+      - name: username
+        in: query
+        description: 用户名
+        required: true
+        schema:
+          type: string
+      - name: password
+        in: query
+        description: 密码
+        required: true
+        schema:
+          type: string
+
+      responses:
+        '200':
+          description: 成功更改用户自身信息
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 信息
+                  username:
+                    type: string
+                    description: 用户名
+
+
+
+  

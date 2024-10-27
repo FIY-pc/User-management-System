@@ -1,0 +1,98 @@
+openapi: 3.1.0
+info:
+  title: 公共权限级别的API
+  description: 不受权限控制，所有用户都可以访问的API
+  version: 1.0.0
+paths:
+  /API/Login:
+    get:
+      summary: 登陆
+
+      parameters:
+        - in: query
+          name: username
+          required: true
+          description: 用户名
+          schema:
+            type: string
+        - in: query
+          name: password
+          required: true
+          description: 密码
+          schema:
+            type: string
+
+      responses:
+        '400':
+          description: 登陆失败
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 登陆失败的具体信息
+                example:
+                  msg: Password Invalid
+
+        '200':
+          description: 返回一个json，包含用户名和token
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  type: string
+                  properties:
+                    msg:
+                      type: string
+                      description: 登陆信息
+                    username:
+                      type: string
+                      description: 用户名
+                    token:
+                      type: string
+                      description: 登陆token
+                example:
+                  msg: Login Success
+                  username:
+                  token:
+
+  /API/Register:
+    get:
+      summary: 注册user权限账户的API
+
+      parameters:
+        - in: query
+          name: username
+          required: true
+          description: 用户名
+          schema:
+            type: string
+        - in: query
+          name: password
+          required: true
+          description: 密码
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: 返回一个json, 包含注册信息
+          content:
+            application/json:
+              schema:
+                type: string
+                items:
+                  type: object
+                  properties:
+                    msg:
+                      type: string
+                      description: 注册信息
+                    username:
+                      type: string
+                      description: 用户名
+                example:
+                  msg: Register Success
+                  username:

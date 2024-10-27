@@ -60,8 +60,8 @@ func GetAdminByName(e echo.Context) error {
 	return e.JSON(http.StatusOK, map[string]interface{}{"message": "GetAdmin success", "AdminName": resultAdmin.AdminName, "AdminPass": resultAdmin.AdminPass, "CreateAt": resultAdmin.CreatedAt})
 }
 
-// DeleteAdmin 删除管理员信息
-func DeleteAdmin(e echo.Context) error {
+// DeleteAdminByName 删除管理员信息
+func DeleteAdminByName(e echo.Context) error {
 	if err := model.DeleteAdminByName(e.QueryParam("username")); err != nil {
 		return e.JSON(http.StatusInternalServerError, map[string]interface{}{"massage": "DeleteAdmin fail"})
 	}

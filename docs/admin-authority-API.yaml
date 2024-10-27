@@ -1,0 +1,238 @@
+openapi: 3.1.0
+info:
+  title: Admin权限级别的API
+  description: 只有管理员才能访问的API
+  version: 1.0.0
+paths:
+  /API/admin/CreateUser:
+    get:
+      summary: 创建用户
+      description: admin权限下任意创建用户的API
+      parameters:
+        - name: username
+          in: query
+          schema:
+            type: string
+            description: 必须在URL里提供的用户名参数
+          required: true
+        - name: password
+          in: query
+          schema:
+            type: string
+            description: 必须在URL里提供的密码参数
+          required: true
+
+      responses:
+        '200':
+          description: 成功创建用户
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 信息
+                  username:
+                    type: string
+
+  /API/admin/UpdateUser:
+    get:
+      summary: 更新用户信息
+      description: admin权限下任意更新用户信息的API
+      parameters:
+        - name: username
+          in: query
+          schema:
+            type: string
+            description: 必须在URL里提供的用户名参数
+          required: true
+        - name: password
+          in: query
+          schema:
+            type: string
+            description: 必须在URL里提供的密码参数
+          required: true
+
+      responses:
+        '200':
+          description: 成功更新用户信息
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 信息
+                  username:
+                    type: string
+
+  /API/admin/UserDelete:
+    get:
+      summary: 删除用户
+      description: admin权限下任意删除用户的API
+      parameters:
+        - name: username
+          in: query
+          schema:
+            type: string
+            description: 必须在URL里提供的用户名参数
+          required: true
+
+      responses:
+        '200':
+          description: 成功删除用户
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 信息
+                  username:
+                    type: string
+
+  /API/admin/UserGetByName:
+    get:
+      summary: 查询用户信息
+      description: admin权限下根据用户名任意查询用户信息的API
+      parameters:
+        - name: username
+          in: query
+          schema:
+            type: string
+            description: 必须在URL里提供的用户名参数
+          required: true
+
+      responses:
+        '200':
+          description: 成功获取用户信息
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 信息
+                  username:
+                    type: string
+
+  /API/admin/GetAdminByName:
+    get:
+      summary: 查询管理员信息
+      description: admin权限下根据管理员名任意查询管理员信息的API
+      parameters:
+        - name: username
+          in: query
+          schema:
+            type: string
+            description: 必须在URL里提供的用户名参数
+          required: true
+
+      responses:
+        '200':
+          description: 成功获取管理员信息
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 信息
+                  username:
+                    type: string
+
+  /API/admin/CreateAdmin:
+    get:
+      summary: 创建管理员
+      description: admin权限下任意创建管理员的API
+      parameters:
+        - name: username
+          in: query
+          schema:
+            type: string
+            description: 必须在URL里提供的用户名参数
+          required: true
+        - name: password
+          in: query
+          schema:
+            type: string
+            description: 必须在URL里提供的密码参数
+          required: true
+
+
+      responses:
+        '200':
+          description: 成功创建管理员
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 信息
+                  username:
+                    type: string
+
+  /API/admin/DeleteAdminByName:
+    get:
+      summary: 删除管理员
+      description: admin权限下任意删除管理员的API
+      parameters:
+        - name: username
+          in: query
+          schema:
+            type: string
+            description: 必须在URL里提供的管理员账号名参数
+          required: true
+
+      responses:
+        '200':
+          description: 成功删除管理员
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 信息
+                  username:
+                    type: string
+
+  /API/admin/UpdateAdmin:
+    get:
+      summary: 更新管理员信息
+      description: admin权限下任意更新管理员信息的API
+      parameters:
+        - name: username
+          in: query
+          schema:
+            type: string
+            description: 必须在URL里提供的用户名参数
+          required: true
+        - name: password
+          in: query
+          schema:
+            type: string
+            description: 必须在URL里提供的密码参数
+          required: true
+
+      responses:
+        '200':
+          description: 成功更新管理员信息
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 信息
+                  username:
+                    type: string

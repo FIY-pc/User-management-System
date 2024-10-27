@@ -15,14 +15,14 @@ func Register(e echo.Context) error {
 	Password := e.QueryParam("password")
 	// 非空检查
 	if Name == "" {
-		return e.JSON(http.StatusBadRequest, map[string]string{"message": "username is empty"})
+		return e.JSON(http.StatusBadRequest, map[string]string{"msg": "username is empty"})
 	}
 	if Password == "" {
-		return e.JSON(http.StatusBadRequest, map[string]string{"message": "password is empty"})
+		return e.JSON(http.StatusBadRequest, map[string]string{"msg": "password is empty"})
 	}
 	// 检查是否存在同名user
 	if existuser, _ := model.GetUserByName(Name); existuser.Name == Name {
-		return e.JSON(http.StatusBadRequest, map[string]string{"message": "username already exist"})
+		return e.JSON(http.StatusBadRequest, map[string]string{"msg": "username already exist"})
 	}
 	// 注册
 	newUser := model.User{}
@@ -30,14 +30,14 @@ func Register(e echo.Context) error {
 	// 密码加密
 	hashPassword, err := bcrypt.GenerateFromPassword([]byte(Password), config.Config.Bcrypt.Cost)
 	if err != nil {
-		return e.JSON(http.StatusInternalServerError, map[string]string{"message": "password encrypt error"})
+		return e.JSON(http.StatusInternalServerError, map[string]string{"msg": "password encrypt error"})
 	}
 	newUser.Password = string(hashPassword)
 
 	if err := model.CreateUser(&newUser); err != nil {
 		return e.String(http.StatusInternalServerError, err.Error())
 	} else {
-		return e.JSON(http.StatusOK, map[string]string{"message": "User register success", "username": newUser.Name})
+		return e.JSON(http.StatusOK, map[string]string{"msg": "User register success", "username": newUser.Name})
 	}
 }
 
@@ -74,7 +74,7 @@ func Login(e echo.Context) error {
 			return e.String(http.StatusInternalServerError, err.Error())
 		}
 		// 返回token
-		return e.JSON(http.StatusOK, map[string]string{"message": "Admin Login success", "AdminName": resultAdmin.AdminName, "token": token})
+		return e.JSON(http.StatusOK, map[string]string{"msg": "Admin Login success", "AdminName": resultAdmin.AdminName, "token": token})
 	}
 
 	// user密码验证
@@ -95,7 +95,7 @@ func Login(e echo.Context) error {
 	}
 
 	// 返回token
-	return e.JSON(http.StatusOK, map[string]string{"message": "Login success", "username": resultuser.Name, "token": token})
+	return e.JSON(http.StatusOK, map[string]string{"msg": "Login success", "username": resultuser.Name, "token": token})
 }
 
 func UserCreate(e echo.Context) error {
@@ -111,10 +111,10 @@ func UserCreate(e echo.Context) error {
 	if err := model.CreateUser(user); err != nil {
 		return e.String(http.StatusInternalServerError, err.Error())
 	}
-	return e.JSON(http.StatusOK, map[string]string{"message": "Create user success", "username": user.Name})
+	return e.JSON(http.StatusOK, map[string]string{"msg": "Create user success", "username": user.Name})
 }
 
-func UserGet(e echo.Context) error {
+func UserGetByName(e echo.Context) error {
 	name := e.QueryParam("username")
 	resultuser, err := model.GetUserByName(name)
 	if err != nil {
@@ -140,19 +140,19 @@ func UserUpdate(e echo.Context) error {
 }
 
 func UserUpdateSelf(e echo.Context) error {
-	return e.JSON(http.StatusOK, map[string]string{"message": "update self"})
+	return e.JSON(http.StatusOK, map[string]string{"msg": "update self"})
 }
 
-func UserDelete(e echo.Context) error {
+func UserDeleteByName(e echo.Context) error {
 	resultuser, err := model.GetUserByName(e.QueryParam("username"))
 	if err != nil {
-		return e.JSON(http.StatusBadRequest, map[string]string{"message": err.Error()})
+		return e.JSON(http.StatusBadRequest, map[string]string{"msg": err.Error()})
 	}
 	if resultuser == nil {
-		return e.JSON(http.StatusBadRequest, map[string]string{"message": "user not exist"})
+		return e.JSON(http.StatusBadRequest, map[string]string{"msg": "user not exist"})
 	}
 	if err := model.DeleteUserByName(resultuser.Name); err != nil {
-		return e.JSON(http.StatusInternalServerError, map[string]string{"message": err.Error()})
+		return e.JSON(http.StatusInternalServerError, map[string]string{"msg": err.Error()})
 	}
 	return e.JSON(http.StatusOK, resultuser)
 }
