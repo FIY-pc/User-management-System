@@ -15,14 +15,14 @@ func Register(e echo.Context) error {
 	Password := e.QueryParam("password")
 	// 非空检查
 	if Name == "" {
-		return e.JSON(http.StatusOK, map[string]string{"message": "username is empty"})
+		return e.JSON(http.StatusBadRequest, map[string]string{"message": "username is empty"})
 	}
 	if Password == "" {
-		return e.JSON(http.StatusOK, map[string]string{"message": "password is empty"})
+		return e.JSON(http.StatusBadRequest, map[string]string{"message": "password is empty"})
 	}
 	// 检查是否存在同名user
 	if existuser, _ := model.GetUserByName(Name); existuser.Name == Name {
-		return e.JSON(http.StatusOK, map[string]string{"message": "username already exist"})
+		return e.JSON(http.StatusBadRequest, map[string]string{"message": "username already exist"})
 	}
 	// 注册
 	newUser := model.User{}
@@ -30,7 +30,7 @@ func Register(e echo.Context) error {
 	// 密码加密
 	hashPassword, err := bcrypt.GenerateFromPassword([]byte(Password), config.Config.Bcrypt.Cost)
 	if err != nil {
-		return e.JSON(http.StatusOK, map[string]string{"message": "password encrypt error"})
+		return e.JSON(http.StatusInternalServerError, map[string]string{"message": "password encrypt error"})
 	}
 	newUser.Password = string(hashPassword)
 
@@ -55,12 +55,12 @@ func Login(e echo.Context) error {
 		resultAdmin, err := model.GetAdminByName(user.Name)
 		if err != nil {
 			// 确定admin表和user表都不存在该用户
-			return e.String(http.StatusInternalServerError, err.Error())
+			return e.String(http.StatusBadRequest, err.Error())
 		}
 		// 验证adminPass
 		err = bcrypt.CompareHashAndPassword([]byte(resultAdmin.AdminPass), []byte(user.Password))
 		if err != nil {
-			return e.String(http.StatusInternalServerError, "Password Invalid")
+			return e.String(http.StatusBadRequest, "Password Invalid")
 		}
 		// 验证成功
 		// 生成token
@@ -80,7 +80,7 @@ func Login(e echo.Context) error {
 	// user密码验证
 	err = bcrypt.CompareHashAndPassword([]byte(resultuser.Password), []byte(user.Password))
 	if err != nil {
-		return e.String(http.StatusInternalServerError, "Password Invalid")
+		return e.String(http.StatusBadRequest, "Password Invalid")
 	}
 
 	// 生成token
@@ -105,7 +105,7 @@ func UserCreate(e echo.Context) error {
 
 	// 检查是否存在同名admin
 	if _, err := model.GetAdminByName(user.Name); err == nil {
-		return e.String(http.StatusInternalServerError, "username exist") // 防止泄漏真实admin账号名
+		return e.String(http.StatusBadRequest, "username exist") // 防止泄漏真实admin账号名
 	}
 
 	if err := model.CreateUser(user); err != nil {
@@ -118,7 +118,7 @@ func UserGet(e echo.Context) error {
 	name := e.QueryParam("username")
 	resultuser, err := model.GetUserByName(name)
 	if err != nil {
-		return e.String(http.StatusInternalServerError, err.Error())
+		return e.String(http.StatusBadRequest, err.Error())
 	}
 	return e.JSON(http.StatusOK, resultuser)
 }
@@ -130,7 +130,7 @@ func UserUpdate(e echo.Context) error {
 
 	err := model.UpdateUser(&user)
 	if err != nil {
-		return e.String(http.StatusInternalServerError, err.Error())
+		return e.String(http.StatusBadRequest, err.Error())
 	}
 	resultuser, err := model.GetUserByName(user.Name)
 	if err != nil {
@@ -146,10 +146,10 @@ func UserUpdateSelf(e echo.Context) error {
 func UserDelete(e echo.Context) error {
 	resultuser, err := model.GetUserByName(e.QueryParam("username"))
 	if err != nil {
-		return e.JSON(http.StatusInternalServerError, map[string]string{"message": err.Error()})
+		return e.JSON(http.StatusBadRequest, map[string]string{"message": err.Error()})
 	}
 	if resultuser == nil {
-		return e.JSON(http.StatusOK, map[string]string{"message": "user not exist"})
+		return e.JSON(http.StatusBadRequest, map[string]string{"message": "user not exist"})
 	}
 	if err := model.DeleteUserByName(resultuser.Name); err != nil {
 		return e.JSON(http.StatusInternalServerError, map[string]string{"message": err.Error()})
