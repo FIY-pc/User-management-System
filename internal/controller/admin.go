@@ -29,9 +29,8 @@ func CreateAdmin(e echo.Context) error {
 
 // UpdateAdmin 更新管理员信息
 func UpdateAdmin(e echo.Context) error {
-	newAdmin := model.Admin{}
-	newAdmin.AdminName = e.QueryParam("username")
-	// 原始密码
+	newAdmin, err := model.GetAdminByName(e.QueryParam("username"))
+	// 原始新密码
 	rawPassword := e.QueryParam("password")
 	// 对密码进行哈希加密
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(rawPassword), bcrypt.DefaultCost)
@@ -40,7 +39,7 @@ func UpdateAdmin(e echo.Context) error {
 	}
 	newAdmin.AdminPass = string(hashedPassword)
 	// 更新数据库
-	if err := model.UpdateAdmin(&newAdmin); err != nil {
+	if err := model.UpdateAdmin(newAdmin); err != nil {
 		return e.JSON(http.StatusInternalServerError, map[string]interface{}{"massage": "UpdateAdmin fail"})
 	}
 	// 返回结果

@@ -13,12 +13,16 @@ import (
 func Register(e echo.Context) error {
 	Name := e.QueryParam("username")
 	Password := e.QueryParam("password")
+	Email := e.QueryParam("email")
 	// 非空检查
 	if Name == "" {
 		return e.JSON(http.StatusBadRequest, map[string]string{"msg": "username is empty"})
 	}
 	if Password == "" {
 		return e.JSON(http.StatusBadRequest, map[string]string{"msg": "password is empty"})
+	}
+	if Email == "" {
+		return e.JSON(http.StatusBadRequest, map[string]string{"msg": "email is empty"})
 	}
 	// 检查是否存在同名user
 	if existuser, _ := model.GetUserByName(Name); existuser.Name == Name {
@@ -41,6 +45,7 @@ func Register(e echo.Context) error {
 	}
 }
 
+// Login 账密登陆
 func Login(e echo.Context) error {
 	user := &model.User{}
 	user.Name = e.QueryParam("username")
@@ -102,6 +107,7 @@ func UserCreate(e echo.Context) error {
 	user := &model.User{}
 	user.Name = e.QueryParam("username")
 	user.Password = e.QueryParam("password")
+	user.Email = e.QueryParam("email")
 
 	// 检查是否存在同名admin
 	if _, err := model.GetAdminByName(user.Name); err == nil {
@@ -124,11 +130,19 @@ func UserGetByName(e echo.Context) error {
 }
 
 func UserUpdate(e echo.Context) error {
-	user := model.User{}
-	user.Name = e.QueryParam("username")
-	user.Password = e.QueryParam("password")
+	user, err := model.GetUserByName(e.QueryParam("username"))
+	if err != nil {
+		return e.String(http.StatusBadRequest, err.Error())
+	}
 
-	err := model.UpdateUser(&user)
+	if e.QueryParam("password") != "" {
+		user.Password = e.QueryParam("password")
+	}
+	if e.QueryParam("email") != "" {
+		user.Email = e.QueryParam("email")
+	}
+
+	err = model.UpdateUser(user)
 	if err != nil {
 		return e.String(http.StatusBadRequest, err.Error())
 	}
@@ -154,5 +168,5 @@ func UserDeleteByName(e echo.Context) error {
 	if err := model.DeleteUserByName(resultuser.Name); err != nil {
 		return e.JSON(http.StatusInternalServerError, map[string]string{"msg": err.Error()})
 	}
-	return e.JSON(http.StatusOK, resultuser)
+	return e.JSON(http.StatusOK, map[string]string{"msg": "Delete user success", "username": resultuser.Name})
 }
