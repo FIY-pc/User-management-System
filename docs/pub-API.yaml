@@ -3,6 +3,10 @@ info:
   title: 公共权限级别的API
   description: 不受权限控制，所有用户都可以访问的API
   version: 1.0.0
+
+servers:
+  - url: http://localhost:10100
+    description: 本机测试URL
 paths:
   /API/Login:
     get:
@@ -33,8 +37,6 @@ paths:
                   msg:
                     type: string
                     description: 登陆失败的具体信息
-                example:
-                  msg: Password Invalid
 
         '200':
           description: 返回一个json，包含用户名和token
@@ -54,10 +56,6 @@ paths:
                     token:
                       type: string
                       description: 登陆token
-                example:
-                  msg: Login Success
-                  username:
-                  token:
 
   /API/Register:
     get:
@@ -99,7 +97,26 @@ paths:
                     username:
                       type: string
                       description: 用户名
-                example:
-                  msg: Register Success
-                  username:
-                  email:
+        '400':
+          description: 因参数有误导致的注册失败
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 注册失败的具体信息
+        '500':
+          description: 因服务器内部错误导致的注册失败
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 注册失败的具体信息
+                  error:
+                    type: string
+                    description: 服务器内部错误信息

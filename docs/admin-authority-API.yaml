@@ -3,6 +3,9 @@ info:
   title: Admin权限级别的API
   description: 只有管理员才能访问的API
   version: 1.0.0
+servers:
+  - url: http://localhost:10100
+    description: 本机测试
 paths:
   /API/admin/CreateUser:
     get:
@@ -27,7 +30,8 @@ paths:
             type: string
             description: 必须在URL里提供的邮箱参数
           required: true
-
+      security:
+        - BearerAuth: [ ]
       responses:
         '200':
           description: 成功创建用户
@@ -41,6 +45,37 @@ paths:
                     description: 信息
                   username:
                     type: string
+        '400':
+          description: 用户名已存在
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 信息
+                  username:
+                    type: string
+                  error:
+                    type: string
+                    description: 错误信息
+
+        '500':
+          description: 密码加密失败或用户创建错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 信息
+                  username:
+                    type: string
+                  error:
+                    type: string
+                    description: 错误信息
 
   /API/admin/UpdateUser:
     get:
@@ -65,7 +100,8 @@ paths:
             type: string
             description: 可选，更改邮箱
           required: false
-
+      security:
+        - BearerAuth: [ ]
       responses:
         '200':
           description: 成功更新用户信息
@@ -79,6 +115,36 @@ paths:
                     description: 信息
                   username:
                     type: string
+        '400':
+          description: 用户名不存在
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 信息
+                  username:
+                    type: string
+                  error:
+                    type: string
+                    description: 错误信息
+        '500':
+          description: 密码加密失败或用户更新错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 信息
+                  username:
+                    type: string
+                  error:
+                    type: string
+                    description: 错误信息
 
   /API/admin/UserDelete:
     get:
@@ -91,7 +157,8 @@ paths:
             type: string
             description: 必须在URL里提供的用户名参数
           required: true
-
+      security:
+        - BearerAuth: [ ]
       responses:
         '200':
           description: 成功删除用户
@@ -105,6 +172,36 @@ paths:
                     description: 信息
                   username:
                     type: string
+        '400':
+          description: 用户名不存在
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 信息
+                  username:
+                    type: string
+                  error:
+                    type: string
+                    description: 错误信息
+        '500':
+          description: 用户删除错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 信息
+                  username:
+                    type: string
+                  error:
+                    type: string
+                    description: 错误信息
 
   /API/admin/UserGetByName:
     get:
@@ -117,7 +214,8 @@ paths:
             type: string
             description: 必须在URL里提供的用户名参数
           required: true
-
+      security:
+        - BearerAuth: [ ]
       responses:
         '200':
           description: 成功获取用户信息
@@ -131,6 +229,21 @@ paths:
                     description: 信息
                   username:
                     type: string
+        '400':
+          description: 用户名不存在
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 信息
+                  username:
+                    type: string
+                  error:
+                    type: string
+                    description: 错误信息
 
   /API/admin/GetAdminByName:
     get:
@@ -143,7 +256,8 @@ paths:
             type: string
             description: 必须在URL里提供的用户名参数
           required: true
-
+      security:
+        - BearerAuth: [ ]
       responses:
         '200':
           description: 成功获取管理员信息
@@ -157,6 +271,21 @@ paths:
                     description: 信息
                   username:
                     type: string
+        '400':
+          description: 管理员不存在
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 信息
+                  username:
+                    type: string
+                  error:
+                    type: string
+                    description: 错误信息
 
   /API/admin/CreateAdmin:
     get:
@@ -175,8 +304,8 @@ paths:
             type: string
             description: 必须在URL里提供的密码参数
           required: true
-
-
+      security:
+        - BearerAuth: [ ]
       responses:
         '200':
           description: 成功创建管理员
@@ -190,6 +319,21 @@ paths:
                     description: 信息
                   username:
                     type: string
+        '500':
+          description: 密码加密失败或管理员创建错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 信息
+                  username:
+                    type: string
+                  error:
+                    type: string
+                    description: 错误信息
 
   /API/admin/DeleteAdminByName:
     get:
@@ -202,7 +346,8 @@ paths:
             type: string
             description: 必须在URL里提供的管理员账号名参数
           required: true
-
+      security:
+        - BearerAuth: [ ]
       responses:
         '200':
           description: 成功删除管理员
@@ -216,6 +361,21 @@ paths:
                     description: 信息
                   username:
                     type: string
+        '400':
+          description: 管理员不存在或删除错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 信息
+                  username:
+                    type: string
+                  error:
+                    type: string
+                    description: 错误信息
 
   /API/admin/UpdateAdmin:
     get:
@@ -234,7 +394,8 @@ paths:
             type: string
             description: 可选，可设置管理员账号的新密码
           required: false
-
+      security:
+        - BearerAuth: [ ]
       responses:
         '200':
           description: 成功更新管理员信息
@@ -248,3 +409,25 @@ paths:
                     description: 信息
                   username:
                     type: string
+        '500':
+          description: 密码加密失败或管理员更新错误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 信息
+                  username:
+                    type: string
+                  error:
+                    type: string
+                    description: 错误信息
+
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
