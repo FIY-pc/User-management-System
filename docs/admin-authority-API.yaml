@@ -21,6 +21,12 @@ paths:
             type: string
             description: 必须在URL里提供的密码参数
           required: true
+        - name: email
+          in: query
+          schema:
+            type: string
+            description: 必须在URL里提供的邮箱参数
+          required: true
 
       responses:
         '200':
@@ -45,14 +51,20 @@ paths:
           in: query
           schema:
             type: string
-            description: 必须在URL里提供的用户名参数
+            description: 必须在URL里提供的用户名参数，用于查询用户
           required: true
         - name: password
           in: query
           schema:
             type: string
-            description: 必须在URL里提供的密码参数
-          required: true
+            description: 可选，更改密码
+          required: false
+        - name: email
+          in: query
+          schema:
+            type: string
+            description: 可选，更改邮箱
+          required: false
 
       responses:
         '200':
@@ -214,14 +226,14 @@ paths:
           in: query
           schema:
             type: string
-            description: 必须在URL里提供的用户名参数
+            description: 必须提供的管理员名参数，用于查询管理员
           required: true
         - name: password
           in: query
           schema:
             type: string
-            description: 必须在URL里提供的密码参数
-          required: true
+            description: 可选，可设置管理员账号的新密码
+          required: false
 
       responses:
         '200':

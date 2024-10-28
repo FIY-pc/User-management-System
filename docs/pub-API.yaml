@@ -76,6 +76,12 @@ paths:
           description: 密码
           schema:
             type: string
+        - in: query
+          name: email
+          required: true
+          description: 邮箱
+          schema:
+            type: string
 
       responses:
         '200':
@@ -96,3 +102,4 @@ paths:
                 example:
                   msg: Register Success
                   username:
+                  email:

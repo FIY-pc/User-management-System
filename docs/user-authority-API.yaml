@@ -36,7 +36,8 @@ paths:
                   username:
                     type: string
                     description: 用户名
-
+                example:
+                  msg:
 
 
   
