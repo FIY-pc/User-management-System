@@ -140,7 +140,12 @@ func UserUpdate(e echo.Context) error {
 	}
 
 	if e.QueryParam("password") != "" {
-		user.Password = e.QueryParam("password")
+		Password := e.QueryParam("password")
+		hashPassword, err := bcrypt.GenerateFromPassword([]byte(Password), config.Config.Bcrypt.Cost)
+		if err != nil {
+			return e.JSON(http.StatusInternalServerError, map[string]string{"msg": "password encrypt error", "error": err.Error()})
+		}
+		user.Password = string(hashPassword)
 	}
 	if e.QueryParam("email") != "" {
 		user.Email = e.QueryParam("email")
@@ -150,6 +155,7 @@ func UserUpdate(e echo.Context) error {
 	if err != nil {
 		return e.JSON(http.StatusBadRequest, map[string]string{"msg": "user update failed", "error": err.Error()})
 	}
+
 	resultuser, err := model.GetUserByName(user.Name)
 	if err != nil {
 		return err

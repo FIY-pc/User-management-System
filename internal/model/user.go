@@ -27,11 +27,7 @@ func UpdateUser(user *User) error {
 	if PostgresDb == nil {
 		return errors.New("postgres db not initialized")
 	}
-	resultUser := PostgresDb.First(&user, user.ID)
-	if resultUser.Error != nil {
-		return resultUser.Error
-	}
-	result := PostgresDb.Save(user)
+	result := PostgresDb.Model(&User{}).Where("name", user.Name).Updates(User{Name: user.Name, Password: user.Password, Email: user.Email})
 	return result.Error
 }
 

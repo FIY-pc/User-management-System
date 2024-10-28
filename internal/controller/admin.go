@@ -4,7 +4,6 @@ import (
 	"User-management-System/internal/model"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
-	"log"
 	"net/http"
 )
 
@@ -36,19 +35,16 @@ func UpdateAdmin(e echo.Context) error {
 	// 对密码进行哈希加密
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(rawPassword), bcrypt.DefaultCost)
 	if err != nil {
-		log.Println(1)
 		return e.JSON(http.StatusInternalServerError, map[string]interface{}{"msg": "UpdateAdmin fail", "error": err.Error()})
 	}
 	newAdmin.AdminPass = string(hashedPassword)
 	// 更新数据库
 	if err := model.UpdateAdmin(newAdmin); err != nil {
-		log.Println(2)
 		return e.JSON(http.StatusInternalServerError, map[string]interface{}{"msg": "UpdateAdmin fail", "error": err.Error()})
 	}
 	// 返回结果
 	resultAdmin, err := model.GetAdminByName(newAdmin.AdminName)
 	if err != nil {
-		log.Println(3)
 		return e.JSON(http.StatusInternalServerError, map[string]interface{}{"msg": "UpdateAdmin fail", "error": err.Error()})
 	}
 	return e.JSON(http.StatusOK, map[string]interface{}{"msg": "UpdateAdmin success", "AdminName": resultAdmin.AdminName, "AdminPass": resultAdmin.AdminPass})
