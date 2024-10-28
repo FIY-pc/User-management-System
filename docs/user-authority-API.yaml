@@ -24,7 +24,8 @@ paths:
         required: true
         schema:
           type: string
-
+      security:
+        - BearerAuth: [ ]
       responses:
         '200':
           description: 成功更改用户自身信息
