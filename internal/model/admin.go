@@ -49,7 +49,7 @@ func UpdateAdmin(admin *Admin) error {
 	if PostgresDb == nil {
 		return errors.New("postgres db is nil")
 	}
-	resultAdmin := PostgresDb.First(&admin, admin.ID)
+	resultAdmin := PostgresDb.Where("admin_name", admin.AdminName).First(&admin)
 	if resultAdmin.Error != nil {
 		return resultAdmin.Error
 	}
@@ -82,6 +82,6 @@ func DeleteAdminByName(name string) error {
 	if PostgresDb == nil {
 		return errors.New("postgres db is nil")
 	}
-	resultAdmin := PostgresDb.Where("admin_name=", name).Delete(&Admin{})
+	resultAdmin := PostgresDb.Where("admin_name", name).Delete(&Admin{})
 	return resultAdmin.Error
 }
