@@ -49,11 +49,7 @@ func UpdateAdmin(admin *Admin) error {
 	if PostgresDb == nil {
 		return errors.New("postgres db is nil")
 	}
-	resultAdmin := PostgresDb.Where("admin_name", admin.AdminName).First(&admin)
-	if resultAdmin.Error != nil {
-		return resultAdmin.Error
-	}
-	result := PostgresDb.Save(admin)
+	result := PostgresDb.Model(&Admin{}).Where("admin_name", admin.AdminName).Updates(Admin{AdminName: admin.AdminName, AdminPass: admin.AdminPass})
 	return result.Error
 }
 

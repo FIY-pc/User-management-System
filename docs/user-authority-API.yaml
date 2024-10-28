@@ -3,6 +3,9 @@ info:
   title: user权限能使用的API
   description: 具有user权限的用户才能访问的API
   version: 1.0.0
+servers:
+  - url: http：//localhost:10100
+    description: 本机测试
 paths:
   /API/user/UserUpdateSelf:
     get:
@@ -36,8 +39,11 @@ paths:
                   username:
                     type: string
                     description: 用户名
-                example:
-                  msg:
 
-
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   

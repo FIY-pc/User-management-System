@@ -4,7 +4,6 @@ import (
 	"User-management-System/internal/model"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"
-	"log"
 	"net/http"
 )
 
@@ -36,19 +35,16 @@ func UpdateAdmin(e echo.Context) error {
 	// 对密码进行哈希加密
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(rawPassword), bcrypt.DefaultCost)
 	if err != nil {
-		log.Println(1)
 		return e.JSON(http.StatusInternalServerError, map[string]interface{}{"msg": "UpdateAdmin fail", "error": err.Error()})
 	}
 	newAdmin.AdminPass = string(hashedPassword)
 	// 更新数据库
 	if err := model.UpdateAdmin(newAdmin); err != nil {
-		log.Println(2)
 		return e.JSON(http.StatusInternalServerError, map[string]interface{}{"msg": "UpdateAdmin fail", "error": err.Error()})
 	}
 	// 返回结果
 	resultAdmin, err := model.GetAdminByName(newAdmin.AdminName)
 	if err != nil {
-		log.Println(3)
 		return e.JSON(http.StatusInternalServerError, map[string]interface{}{"msg": "UpdateAdmin fail", "error": err.Error()})
 	}
 	return e.JSON(http.StatusOK, map[string]interface{}{"msg": "UpdateAdmin success", "AdminName": resultAdmin.AdminName, "AdminPass": resultAdmin.AdminPass})
@@ -58,7 +54,7 @@ func UpdateAdmin(e echo.Context) error {
 func GetAdminByName(e echo.Context) error {
 	resultAdmin, err := model.GetAdminByName(e.QueryParam("username"))
 	if err != nil {
-		return e.JSON(http.StatusInternalServerError, map[string]interface{}{"msg": "GetAdmin fail", "error": err.Error()})
+		return e.JSON(http.StatusBadRequest, map[string]interface{}{"msg": "GetAdmin fail", "error": err.Error()})
 	}
 	return e.JSON(http.StatusOK, map[string]interface{}{"msg": "GetAdmin success", "AdminName": resultAdmin.AdminName, "AdminPass": resultAdmin.AdminPass, "CreateAt": resultAdmin.CreatedAt})
 }
@@ -67,7 +63,7 @@ func GetAdminByName(e echo.Context) error {
 func DeleteAdminByName(e echo.Context) error {
 	adminName := e.QueryParam("username")
 	if err := model.DeleteAdminByName(adminName); err != nil {
-		return e.JSON(http.StatusInternalServerError, map[string]interface{}{"msg": "DeleteAdmin fail", "error": err.Error()})
+		return e.JSON(http.StatusBadRequest, map[string]interface{}{"msg": "DeleteAdmin fail", "error": err.Error()})
 	}
 	return e.JSON(http.StatusOK, map[string]interface{}{"msg": "DeleteAdmin success", "AdminName": adminName})
 }
