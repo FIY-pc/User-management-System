@@ -54,7 +54,7 @@ func UpdateAdmin(e echo.Context) error {
 func GetAdminByName(e echo.Context) error {
 	resultAdmin, err := model.GetAdminByName(e.QueryParam("username"))
 	if err != nil {
-		return e.JSON(http.StatusInternalServerError, map[string]interface{}{"msg": "GetAdmin fail", "error": err.Error()})
+		return e.JSON(http.StatusBadRequest, map[string]interface{}{"msg": "GetAdmin fail", "error": err.Error()})
 	}
 	return e.JSON(http.StatusOK, map[string]interface{}{"msg": "GetAdmin success", "AdminName": resultAdmin.AdminName, "AdminPass": resultAdmin.AdminPass, "CreateAt": resultAdmin.CreatedAt})
 }
@@ -63,7 +63,7 @@ func GetAdminByName(e echo.Context) error {
 func DeleteAdminByName(e echo.Context) error {
 	adminName := e.QueryParam("username")
 	if err := model.DeleteAdminByName(adminName); err != nil {
-		return e.JSON(http.StatusInternalServerError, map[string]interface{}{"msg": "DeleteAdmin fail", "error": err.Error()})
+		return e.JSON(http.StatusBadRequest, map[string]interface{}{"msg": "DeleteAdmin fail", "error": err.Error()})
 	}
 	return e.JSON(http.StatusOK, map[string]interface{}{"msg": "DeleteAdmin success", "AdminName": adminName})
 }
