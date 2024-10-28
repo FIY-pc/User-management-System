@@ -46,6 +46,6 @@ func DeleteUserByName(Name string) error {
 	if PostgresDb == nil {
 		return errors.New("postgres db not initialized")
 	}
-	resultUser := PostgresDb.Delete(&User{Name: Name})
+	resultUser := PostgresDb.Where("name", Name).Delete(&User{})
 	return resultUser.Error
 }
