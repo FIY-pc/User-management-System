@@ -22,6 +22,7 @@ type configStruct struct {
 type ServerConfig struct {
 	Port      string `json:"port"`
 	ApiPrefix string `json:"api_prefix"`
+	TestURL   string `json:"test_url"`
 }
 
 // JwtConfig jwt配置信息
