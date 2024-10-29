@@ -1,7 +1,7 @@
 package utils
 
 import (
-	"User-management-System/internal/config"
+	"github.com/FIY-pc/User-management-System/internal/config"
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 	"net/http"

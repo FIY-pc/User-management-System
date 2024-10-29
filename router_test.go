@@ -1,11 +1,11 @@
 package User_management_System
 
 import (
-	"User-management-System/internal/config"
-	"User-management-System/internal/model"
-	"User-management-System/internal/router"
 	"encoding/json"
 	"fmt"
+	"github.com/FIY-pc/User-management-System/internal/config"
+	"github.com/FIY-pc/User-management-System/internal/model"
+	"github.com/FIY-pc/User-management-System/internal/router"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 	"net/http"

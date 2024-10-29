@@ -9,7 +9,7 @@ servers:
 paths:
   /API/user/UserUpdateSelf:
     get:
-      description: 能更改user权限用户自身信息的API
+      description: 能更改user权限用户自身信息的API(未完成)
 
       parameters:
       - name: username

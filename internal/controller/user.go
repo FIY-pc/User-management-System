@@ -1,9 +1,9 @@
 package controller
 
 import (
-	"User-management-System/internal/config"
-	"User-management-System/internal/model"
-	"User-management-System/internal/util"
+	"github.com/FIY-pc/User-management-System/internal/config"
+	"github.com/FIY-pc/User-management-System/internal/model"
+	"github.com/FIY-pc/User-management-System/internal/util"
 	"github.com/golang-jwt/jwt"
 	"github.com/labstack/echo/v4"
 	"golang.org/x/crypto/bcrypt"

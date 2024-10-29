@@ -1,7 +1,7 @@
 package model
 
 import (
-	"User-management-System/internal/config"
+	"github.com/FIY-pc/User-management-System/internal/config"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

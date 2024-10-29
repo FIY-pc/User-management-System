@@ -431,3 +431,5 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
+security:
+  - BearerAuth: []
