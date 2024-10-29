@@ -11,6 +11,11 @@ import (
 func CreateAdmin(e echo.Context) error {
 	newAdmin := model.Admin{}
 	newAdmin.AdminName = e.QueryParam("username")
+	// 检查管理员是否已存在
+	_, err := model.GetAdminByName(newAdmin.AdminName)
+	if err == nil {
+		return e.JSON(http.StatusBadRequest, map[string]interface{}{"msg": "CreateAdmin fail", "error": "Admin already exists"})
+	}
 	// 原始密码
 	rawAdminPass := e.QueryParam("password")
 	// 对密码进行哈希加密
