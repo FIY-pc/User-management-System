@@ -1,9 +1,9 @@
 package main
 
 import (
-	"User-management-System/internal/config"
-	"User-management-System/internal/model"
-	"User-management-System/internal/router"
+	"github.com/FIY-pc/User-management-System/internal/config"
+	"github.com/FIY-pc/User-management-System/internal/model"
+	"github.com/FIY-pc/User-management-System/internal/router"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 )

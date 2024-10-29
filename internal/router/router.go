@@ -1,10 +1,10 @@
 package router
 
 import (
-	"User-management-System/internal/config"
-	"User-management-System/internal/controller"
-	"User-management-System/internal/util"
 	"fmt"
+	"github.com/FIY-pc/User-management-System/internal/config"
+	"github.com/FIY-pc/User-management-System/internal/controller"
+	"github.com/FIY-pc/User-management-System/internal/util"
 	"github.com/labstack/echo/v4"
 	"net/http"
 )

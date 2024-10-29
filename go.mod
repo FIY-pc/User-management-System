@@ -1,4 +1,4 @@
-module User-management-System
+module github.com/FIY-pc/User-management-System
 
 go 1.23.2
 

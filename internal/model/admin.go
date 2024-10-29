@@ -1,8 +1,8 @@
 package model
 
 import (
-	"User-management-System/internal/config"
 	"errors"
+	"github.com/FIY-pc/User-management-System/internal/config"
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 	"log"
