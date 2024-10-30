@@ -22,7 +22,8 @@ jobs:
         run: npm install -g @openapitools/openapi-generator-cli
 
       - name: Generate static site
-        run: openapi-generator-cli generate -i docs/summary.yaml -g html2 -o dist --additional-properties=info.title="My API""
+        run: |
+          openapi-generator-cli generate -i docs/summary.yaml -g html2 -o dist --additional-properties=info.title="My API"
 
       - name: Commit changes to gh-pages branch
         run: |
