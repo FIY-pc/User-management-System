@@ -1,12 +1,160 @@
 openapi: 3.1.0
 info:
-  title: Admin权限级别的API
-  description: 只有管理员才能访问的API
+  title: summary
+  description: summary
   version: 1.0.0
 servers:
   - url: http://localhost:10100
     description: 本机测试
+
 paths:
+  /API/Login:
+    get:
+      summary: 登陆
+
+      parameters:
+        - in: query
+          name: username
+          required: true
+          description: 用户名
+          schema:
+            type: string
+        - in: query
+          name: password
+          required: true
+          description: 密码
+          schema:
+            type: string
+
+      responses:
+        '400':
+          description: 登陆失败
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 登陆失败的具体信息
+
+        '200':
+          description: 返回一个json，包含用户名和token
+          content:
+            application/json:
+              schema:
+                type: object
+                items:
+                  type: string
+                  properties:
+                    msg:
+                      type: string
+                      description: 登陆信息
+                    username:
+                      type: string
+                      description: 用户名
+                    token:
+                      type: string
+                      description: 登陆token
+
+  /API/Register:
+    get:
+      summary: 注册user权限账户的API
+
+      parameters:
+        - in: query
+          name: username
+          required: true
+          description: 用户名
+          schema:
+            type: string
+        - in: query
+          name: password
+          required: true
+          description: 密码
+          schema:
+            type: string
+        - in: query
+          name: email
+          required: true
+          description: 邮箱
+          schema:
+            type: string
+
+      responses:
+        '200':
+          description: 返回一个json, 包含注册信息
+          content:
+            application/json:
+              schema:
+                type: string
+                items:
+                  type: object
+                  properties:
+                    msg:
+                      type: string
+                      description: 注册信息
+                    username:
+                      type: string
+                      description: 用户名
+        '400':
+          description: 因参数有误导致的注册失败
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 注册失败的具体信息
+        '500':
+          description: 因服务器内部错误导致的注册失败
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 注册失败的具体信息
+                  error:
+                    type: string
+                    description: 服务器内部错误信息
+
+  /API/user/UserUpdateSelf:
+    get:
+      description: 能更改user权限用户自身信息的API(未完成)
+
+      parameters:
+        - name: username
+          in: query
+          description: 用户名
+          required: true
+          schema:
+            type: string
+        - name: password
+          in: query
+          description: 密码
+          required: true
+          schema:
+            type: string
+      security:
+        - Authorization: [ ]
+      responses:
+        '200':
+          description: 成功更改用户自身信息
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  msg:
+                    type: string
+                    description: 信息
+                  username:
+                    type: string
+                    description: 用户名
+
   /API/admin/CreateUser:
     get:
       summary: 创建用户

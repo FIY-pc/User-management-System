@@ -25,7 +25,7 @@ paths:
         schema:
           type: string
       security:
-        - BearerAuth: [ ]
+        - Authorization: [ ]
       responses:
         '200':
           description: 成功更改用户自身信息
@@ -43,7 +43,7 @@ paths:
 
 components:
   securitySchemes:
-    BearerAuth:
+    Authorization:
       type: http
       scheme: bearer
       bearerFormat: JWT
