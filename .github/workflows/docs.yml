@@ -18,13 +18,11 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install swagger-ui
-        run: |
-          npm install -g swagger-ui  
+      - name: Install OpenAPI Generator CLI
+        run: npm install -g @openapitools/openapi-generator-cli
 
       - name: Generate static site
-        run: |
-          swagger-ui-bundle -o dist docs/summary.yaml
+        run: openapi-generator-cli generate -i docs/summary.yaml -g html2 -o dist --additional-properties=info.title="My API",info.version="1.0.0"
 
       - name: Commit changes to gh-pages branch
         run: |
@@ -35,4 +33,4 @@ jobs:
           cp -r dist/* .  
           git add .  
           git commit -m "Publish OpenAPI Docs"  
-          git push origin gh-pages --force  
+          git push origin gh-pages --force
