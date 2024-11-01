@@ -8,7 +8,7 @@ servers:
   - url: http://localhost:10100
     description: 本机测试URL
 paths:
-  /API/Login:
+  /tokens:
     get:
       summary: 登陆
 
@@ -57,8 +57,8 @@ paths:
                       type: string
                       description: 登陆token
 
-  /API/Register:
-    get:
+  /users/register:
+    post:
       summary: 注册user权限账户的API
 
       parameters:

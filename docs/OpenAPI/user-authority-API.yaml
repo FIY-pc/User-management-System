@@ -7,8 +7,8 @@ servers:
   - url: http：//localhost:10100
     description: 本机测试
 paths:
-  /API/user/UserUpdateSelf:
-    get:
+  /API/users/self:
+    put:
       description: 能更改user权限用户自身信息的API(未完成)
 
       parameters:
