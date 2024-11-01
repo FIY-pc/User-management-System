@@ -29,7 +29,7 @@ func GetToken() (string, error) {
 	admin.AdminName = "default"
 	admin.AdminPass = "123456"
 
-	req := httptest.NewRequest("GET", fmt.Sprintf("%s/%s/Login?username=%s&password=%s", config.Config.Server.TestURL, config.Config.Server.ApiPrefix, admin.AdminName, admin.AdminPass), nil)
+	req := httptest.NewRequest("GET", fmt.Sprintf("%s/tokens?username=%s&password=%s", config.Config.Server.TestURL, admin.AdminName, admin.AdminPass), nil)
 	rec := httptest.NewRecorder()
 	e.ServeHTTP(rec, req)
 
@@ -61,8 +61,8 @@ func TestCreateAdmin(t *testing.T) {
 	admin.AdminName = "test1"
 	admin.AdminPass = "test1"
 	// 定义请求
-	url := fmt.Sprintf("%s/%s/admin/CreateAdmin?username=%s&password=%s", config.Config.Server.TestURL, config.Config.Server.ApiPrefix, admin.AdminName, admin.AdminPass)
-	req := httptest.NewRequest("GET", url, nil)
+	url := fmt.Sprintf("%s/%s/admins?username=%s&password=%s", config.Config.Server.TestURL, config.Config.Server.ApiPrefix, admin.AdminName, admin.AdminPass)
+	req := httptest.NewRequest("POST", url, nil)
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 	rec := httptest.NewRecorder()
 	// 执行请求
@@ -85,8 +85,8 @@ func TestUpdateAdmin(t *testing.T) {
 	admin := model.Admin{}
 	admin.AdminName = "test1"
 
-	url := fmt.Sprintf("%s/%s/admin/UpdateAdmin?username=%s&password=%s", config.Config.Server.TestURL, config.Config.Server.ApiPrefix, admin.AdminName, admin.AdminPass)
-	req := httptest.NewRequest("GET", url, nil)
+	url := fmt.Sprintf("%s/%s/admins?username=%s&password=%s", config.Config.Server.TestURL, config.Config.Server.ApiPrefix, admin.AdminName, admin.AdminPass)
+	req := httptest.NewRequest("PUT", url, nil)
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 	rec := httptest.NewRecorder()
 
@@ -109,7 +109,7 @@ func TestGetAdmin(t *testing.T) {
 	admin := model.Admin{}
 	admin.AdminName = "test1"
 
-	url := fmt.Sprintf("%s/%s/admin/GetAdminByName?username=%s", config.Config.Server.TestURL, config.Config.Server.ApiPrefix, admin.AdminName)
+	url := fmt.Sprintf("%s/%s/admins?username=%s", config.Config.Server.TestURL, config.Config.Server.ApiPrefix, admin.AdminName)
 	req := httptest.NewRequest("GET", url, nil)
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 	rec := httptest.NewRecorder()
@@ -132,8 +132,8 @@ func TestDeleteAdmin(t *testing.T) {
 	admin := model.Admin{}
 	admin.AdminName = "test1"
 
-	url := fmt.Sprintf("%s/%s/admin/DeleteAdminByName?username=%s", config.Config.Server.TestURL, config.Config.Server.ApiPrefix, admin.AdminName)
-	req := httptest.NewRequest("GET", url, nil)
+	url := fmt.Sprintf("%s/%s/admins?username=%s", config.Config.Server.TestURL, config.Config.Server.ApiPrefix, admin.AdminName)
+	req := httptest.NewRequest("DELETE", url, nil)
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 	rec := httptest.NewRecorder()
 	e.ServeHTTP(rec, req)
@@ -157,8 +157,8 @@ func TestUserCreate(t *testing.T) {
 	user.Password = "test2"
 	user.Email = "EMAIL"
 
-	url := fmt.Sprintf("%s/%s/admin/UserCreate?username=%s&password=%s&email=%s", config.Config.Server.TestURL, config.Config.Server.ApiPrefix, user.Name, user.Password, user.Email)
-	req := httptest.NewRequest("GET", url, nil)
+	url := fmt.Sprintf("%s/%s/users?username=%s&password=%s&email=%s", config.Config.Server.TestURL, config.Config.Server.ApiPrefix, user.Name, user.Password, user.Email)
+	req := httptest.NewRequest("POST", url, nil)
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 	rec := httptest.NewRecorder()
 	e.ServeHTTP(rec, req)
@@ -180,8 +180,8 @@ func TestUserUpdate(t *testing.T) {
 	user := model.User{}
 	user.Name = "test2"
 
-	url := fmt.Sprintf("%s/%s/admin/UserUpdate?username=%s&password=%s&email=%s", config.Config.Server.TestURL, config.Config.Server.ApiPrefix, user.Name, user.Password, user.Email)
-	req := httptest.NewRequest("GET", url, nil)
+	url := fmt.Sprintf("%s/%s/users?username=%s&password=%s&email=%s", config.Config.Server.TestURL, config.Config.Server.ApiPrefix, user.Name, user.Password, user.Email)
+	req := httptest.NewRequest("PUT", url, nil)
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 	rec := httptest.NewRecorder()
 	e.ServeHTTP(rec, req)
@@ -203,7 +203,7 @@ func TestUserGetByName(t *testing.T) {
 	user := model.User{}
 	user.Name = "test2"
 
-	url := fmt.Sprintf("%s/%s/admin/UserGetByName?username=%s", config.Config.Server.TestURL, config.Config.Server.ApiPrefix, user.Name)
+	url := fmt.Sprintf("%s/%s/users?username=%s", config.Config.Server.TestURL, config.Config.Server.ApiPrefix, user.Name)
 	req := httptest.NewRequest("GET", url, nil)
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 	rec := httptest.NewRecorder()
@@ -227,8 +227,8 @@ func TestUserDeleteByName(t *testing.T) {
 	user := model.User{}
 	user.Name = "test2"
 
-	url := fmt.Sprintf("%s/%s/admin/UserDeleteByName?username=%s", config.Config.Server.TestURL, config.Config.Server.ApiPrefix, user.Name)
-	req := httptest.NewRequest("GET", url, nil)
+	url := fmt.Sprintf("%s/%s/users?username=%s", config.Config.Server.TestURL, config.Config.Server.ApiPrefix, user.Name)
+	req := httptest.NewRequest("DELETE", url, nil)
 	req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", token))
 	rec := httptest.NewRecorder()
 	e.ServeHTTP(rec, req)
