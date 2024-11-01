@@ -14,7 +14,6 @@ func UserCreate(e echo.Context) error {
 	user.Name = e.QueryParam("username")
 	Password := e.QueryParam("password")
 	user.Email = e.QueryParam("email")
-
 	hashPassword, err := bcrypt.GenerateFromPassword([]byte(Password), config.Config.Bcrypt.Cost)
 	if err != nil {
 		return e.JSON(http.StatusInternalServerError, Params.ErrorRec{Code: http.StatusInternalServerError, Msg: "password encrypt error", Error: err.Error()})
