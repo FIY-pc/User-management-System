@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"log"
 	"os"
+	"strings"
 )
 
 // Config 所有配置信息将从json文件加载到该结构体实例中
@@ -49,7 +50,14 @@ type BcryptConfig struct {
 
 // InitConfig 初始化配置信息
 func InitConfig() {
-	data, err := os.ReadFile("./Config/default.json")
+	dir, err := os.Getwd()
+	if err != nil {
+		panic(err)
+	}
+	parts := strings.Split(dir, "User-management-System")
+	path := parts[0] + "User-management-System/Config/default.json"
+
+	data, err := os.ReadFile(path)
 	if err != nil {
 		panic(err)
 	}
